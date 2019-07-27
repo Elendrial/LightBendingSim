@@ -83,15 +83,15 @@ public class LineHelper {
 		double pgrad = (p1.getY()-p2.getY())/(p1.getX()-p2.getX());
 		double qgrad = (q1.getY()-q2.getY())/(q1.getX()-q2.getX());
 		
-		// y = m(x-a)+b
-		// y = n(x-c)+d
+		// y = m(x-a)+b		= pgrad(x - p1.x) + p1.y
+		// y = n(x-c)+d		= qgrad(x - q1.x) + q1.y
 		
 		// m(x-a)+b = n(x-c)+d
 		// mx-ma+b  = nx-nc+d
 		// mx-nx    = ma-nc+d-b
-		// x        = (ma-nc+d-b)/(m+n)
+		// x        = (ma-nc+d-b)/(m-n)		= (pgrad*p1.x - qgrad*q1.x + q1.y - p1.y)/(pgrad-qgrad)
 		
-		int xint = (int) ((pgrad * p1.x - qgrad * q1.x + q1.y - p1.y)/(pgrad + qgrad));
+		int xint = (int) ((pgrad * p1.x - qgrad * q1.x + q1.y - p1.y)/(pgrad - qgrad));
 		int yint = (int) (pgrad * (xint - p1.x) + p1.y);
 		
 		return new Point(xint, yint);
@@ -114,20 +114,9 @@ public class LineHelper {
 	//}
 	
 	public static double angleBetween(Point p1, Point p2, Point q1, Point q2) {
-		//double pgrad = (p1.getY()-p2.getY())/(p1.getX()-p2.getX());
-		//double qgrad = (q1.getY()-q2.getY())/(q1.getX()-q2.getX());
-		//return Math.atan((pgrad - qgrad)/(1 + pgrad + qgrad)) * (180D/Math.PI);
-		
-		int dxa = p1.x - p2.x;
-		int dxb = q1.x - q2.x;
-		int dya = p1.y - p2.y;
-		int dyb = q2.y = q2.y;
-		
-		double lena = Math.sqrt(Math.pow(dxa, 2) + Math.pow(dya, 2));
-		double lenb = Math.sqrt(Math.pow(dxb, 2) + Math.pow(dyb, 2));
-		
-		return Math.acos((dxa * dxb + dya * dyb)/(lena * lenb)) * 180D/Math.PI;
-		
+		double pgrad = (p1.getY()-p2.getY())/(p1.getX()-p2.getX());
+		double qgrad = (q1.getY()-q2.getY())/(q1.getX()-q2.getX());
+		return 90 - Math.atan((qgrad - pgrad)/(1 + pgrad * qgrad)) * (180D/Math.PI);
 	}
 
 	public static double angleBetween(Boundary b, RaySegment r) {

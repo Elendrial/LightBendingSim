@@ -16,7 +16,7 @@ public class LightSource extends GraphicalObject{
 	
 	public void rotate(double angle) {
 		for(int i = 0; i < directions.length; i++) {
-			directions[i] = directions[i] + angle;
+			directions[i] = (directions[i] + angle) % 360;
 		}
 	}
 	

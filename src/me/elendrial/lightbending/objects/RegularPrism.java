@@ -26,7 +26,7 @@ public class RegularPrism extends Prism {
 	}
 	
 	public void setAngle(double a) {
-		angle = a;
+		angle = a % 360;
 		calculateVertices();
 	}
 	

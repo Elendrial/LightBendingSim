@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 import me.elendrial.lightbending.LightBending;
+import me.elendrial.lightbending.LineHelper;
 
 public class LightRay {
 
@@ -35,7 +36,6 @@ public class LightRay {
 		
 		// double curGrad = Math.tan(curSeg.angle * Math.PI/180D);
 		tempang.add(angleBetweenLines);
-		if(LightBending.debug) System.out.println("[lightray]: angleBetweenLines: " + angleBetweenLines);
 		
 		double angleofincidence = angleBetweenLines - 90;
 		double angleofrefraction = Math.asin(curRefractiveIndex * Math.sin(angleofincidence * Math.PI/180D) / newRefractiveIndex) * (180D/Math.PI);
@@ -43,7 +43,7 @@ public class LightRay {
 		
 		//if(angleBetweenLines > 45) angleofrefraction = 90 + (90 - angleofrefraction);
 		
-		RaySegment newsegment = new RaySegment(intercept.x, intercept.y, incAngle + (angleofrefraction - angleofincidence));
+		RaySegment newsegment = new RaySegment(intercept.x, intercept.y, incAngle - (angleofrefraction - angleofincidence));
 		raySegments.add(newsegment);
 		curSeg = newsegment;
 	}
@@ -62,7 +62,8 @@ public class LightRay {
 		// TODO: Use wavelength to change the colour
 		int i = 0;
 		for(RaySegment r : raySegments) {
-			g.drawLine(r.startX, r.startY, (int) (r.startX + Math.sin(r.angle * Math.PI/180D) * r.length), (int) (r.startY + Math.cos(r.angle * Math.PI/180D) * r.length));
+			Point otherend = LineHelper.getOppositeEnd(r.startX, r.startY, r.angle, r.length);
+			g.drawLine(r.startX, r.startY, otherend.x, otherend.y);
 			if(LightBending.debug) {
 				g.setColor(Color.red);
 				g.drawRect(r.startX - 2, r.startY - 2, 4, 4);
