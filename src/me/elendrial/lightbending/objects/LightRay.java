@@ -37,13 +37,13 @@ public class LightRay {
 		tempang.add(angleBetweenLines);
 		if(LightBending.debug) System.out.println("[lightray]: angleBetweenLines: " + angleBetweenLines);
 		
-		double angleofincidence = 90 - angleBetweenLines;
+		double angleofincidence = angleBetweenLines - 90;
 		double angleofrefraction = Math.asin(curRefractiveIndex * Math.sin(angleofincidence * Math.PI/180D) / newRefractiveIndex) * (180D/Math.PI);
 		curSeg.length = Math.sqrt(Math.pow(curSeg.startX - intercept.x, 2) + Math.pow(curSeg.startY - intercept.y, 2));
 		
 		//if(angleBetweenLines > 45) angleofrefraction = 90 + (90 - angleofrefraction);
 		
-		RaySegment newsegment = new RaySegment(intercept.x, intercept.y, angleofrefraction + incAngle);
+		RaySegment newsegment = new RaySegment(intercept.x, intercept.y, incAngle + (angleofrefraction - angleofincidence));
 		raySegments.add(newsegment);
 		curSeg = newsegment;
 	}
@@ -66,8 +66,8 @@ public class LightRay {
 			if(LightBending.debug) {
 				g.setColor(Color.red);
 				g.drawRect(r.startX - 2, r.startY - 2, 4, 4);
-				g.drawString((r.angle + "").substring(0, 4), r.startX-20, r.startY+15);
-				if(i >0) g.drawString("angle between lines: " + (tempang.get(i-1) + "").substring(0, 4), r.startX-60, r.startY-13);
+				g.drawString((r.angle + "     ").substring(0, 5), r.startX-20, r.startY+15);
+				if(i >0) g.drawString("angle between lines: " + (tempang.get(i-1) + "     ").substring(0, 5), r.startX-60, r.startY-13);
 				g.setColor(Color.WHITE);
 			}
 			i++;
