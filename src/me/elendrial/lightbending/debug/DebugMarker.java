@@ -12,6 +12,7 @@ public class DebugMarker extends GraphicalObject{
 
 	Color c = Color.BLUE;
 	int size = 3;
+	String text = "";
 	
 	public DebugMarker(int x, int y) {
 		super(x, y);
@@ -35,6 +36,11 @@ public class DebugMarker extends GraphicalObject{
 	public void render(Graphics g) {
 		g.setColor(c);
 		g.drawRect((int) centreX-size, (int) centreY-size, size*2, size*2);
+		g.drawString(text, (int) centreX - 5, (int) centreY - 10); 
 	}
 
+	public void setText(String s) {
+		text = s;
+	}
+	
 }

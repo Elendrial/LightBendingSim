@@ -109,7 +109,7 @@ public class LightBending {
 		
 		for(LightRay ray : rayList) {
 			
-			Boundary closest;
+			Boundary closest, lastRefracted = null;
 			
 			int count = 0;
 			
@@ -117,24 +117,27 @@ public class LightBending {
 				count++;
 				closest = null;
 				Prism inside = null;
-				Point2D.Double intersection = null;
+				Point2D.Double intersection = null, tempIntersection = null;
 				Point2D.Double rayStart = new Point2D.Double(ray.curSeg.startX, ray.curSeg.startY);
 				double lowestDist = Double.MAX_VALUE, dist;
 
 				new DebugMarker(rayStart, Color.ORANGE,5);
 				
 				for(Boundary b : boundaryList) {
-					if(LineHelper.doIntersect(b, ray.curSeg)) {
-						intersection = LineHelper.getIntersection(b, ray.curSeg);
-						dist = rayStart.distance(intersection);
+					if(!b.equals(lastRefracted) && LineHelper.doIntersect(b, ray.curSeg)) {
+						tempIntersection = LineHelper.getIntersection(b, ray.curSeg);
+						dist = rayStart.distance(tempIntersection);
 						if(dist < lowestDist) {
 							closest = b;
 							lowestDist = dist;
+							intersection = tempIntersection;
 						}
 						
-						new DebugMarker(intersection, Color.BLUE, 3);
+						new DebugMarker(tempIntersection, Color.BLUE, 3).setText((dist + "    ").substring(0, 4));
 					}
 				}
+				
+				lastRefracted = closest;
 				
 				if(closest != null) {
 					double curRefractiveIndex = inside == null ? 1 : inside.getRefractiveIndex(ray.wavelength);

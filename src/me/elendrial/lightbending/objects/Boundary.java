@@ -25,4 +25,13 @@ public class Boundary {
 		g.drawLine(x1, y1, x2, y2);
 	}
 	
+	public boolean equals(Object o) {
+		if(o == null) return false;
+		if(!(o instanceof Boundary)) return false;
+		
+		Boundary b = (Boundary) o;
+		if(b.x1 == x1 && b.x2 == x2 && b.y1 == y1 && b.y2 == y2) return true;
+		return false;
+	}
+	
 }
