@@ -1,6 +1,6 @@
 package me.elendrial.lightbending.objects;
 
-import java.awt.Point;
+import java.awt.geom.Point2D;
 
 public class RegularPrism extends Prism {
 
@@ -37,9 +37,9 @@ public class RegularPrism extends Prism {
 	public void calculateVertices() {
 		vertices.clear();
 		for(double i = 0; i < 3; i++) {
-			Point vertex = new Point(
-					(int) (centreX + Math.sin((angle + 120*i) * Math.PI/180D) * distFromOrigin), 
-					(int) (centreY + Math.cos((angle + 120*i) * Math.PI/180D) * distFromOrigin));
+			Point2D.Double vertex = new Point2D.Double(
+					(centreX + Math.sin((angle + 120*i) * Math.PI/180D) * distFromOrigin), 
+					(centreY + Math.cos((angle + 120*i) * Math.PI/180D) * distFromOrigin));
 			this.vertices.add(vertex);
 		}
 	}

@@ -1,6 +1,7 @@
 package me.elendrial.lightbending;
 
 import java.awt.Point;
+import java.awt.geom.Point2D;
 
 import me.elendrial.lightbending.objects.Boundary;
 import me.elendrial.lightbending.objects.LightRay.RaySegment;
@@ -11,7 +12,7 @@ public class LineHelper {
 
 	// Given three colinear points p, q, r, the function checks if
 	// point q lies on line segment 'pr'
-	static boolean onSegment(Point p, Point q, Point r) {
+	static boolean onSegment(Point2D.Double p, Point2D.Double q, Point2D.Double r) {
 		if (q.x <= Math.max(p.x, r.x) && q.x >= Math.min(p.x, r.x) && q.y <= Math.max(p.y, r.y)
 				&& q.y >= Math.min(p.y, r.y))
 			return true;
@@ -24,10 +25,10 @@ public class LineHelper {
 	// 0 --> p, q and r are colinear
 	// 1 --> Clockwise
 	// 2 --> Counterclockwise
-	static int orientation(Point p, Point q, Point r) {
+	static int orientation(Point2D.Double p, Point2D.Double q, Point2D.Double r) {
 		// See https://www.geeksforgeeks.org/orientation-3-ordered-points/
 		// for details of below formula.
-		int val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
+		double val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
 
 		if (val == 0)
 			return 0; // colinear
@@ -37,7 +38,7 @@ public class LineHelper {
 
 	// The main function that returns true if line segment 'p1q1'
 	// and 'p2q2' intersect.
-	static boolean doIntersect(Point p1, Point q1, Point p2, Point q2) {
+	static boolean doIntersect(Point2D.Double p1, Point2D.Double q1, Point2D.Double p2, Point2D.Double q2) {
 		// Find the four orientations needed for general and
 		// special cases
 		int o1 = orientation(p1, q1, p2);
@@ -71,15 +72,15 @@ public class LineHelper {
 	
 	// End of nabbed code
 	
-	static boolean doIntersect(int xa1, int ya1, int xa2, int ya2, int xb1, int yb1, int xb2, int yb2) {
-		return doIntersect(new Point(xa1, ya1), new Point(xa2, ya2), new Point(xb1, yb1), new Point(xb2, yb2));
+	static boolean doIntersect(double xa1, double ya1, double xa2, double ya2, double xb1, double yb1, double xb2, double yb2) {
+		return doIntersect(new Point2D.Double(xa1, ya1), new Point2D.Double(xa2, ya2), new Point2D.Double(xb1, yb1), new Point2D.Double(xb2, yb2));
 	}
 	
 	static boolean doIntersect(Boundary b, RaySegment r) {
-		return doIntersect(new Point(b.x1, b.y1), new Point(b.x2, b.y2), new Point(r.startX, r.startY), getOppositeEnd(r.startX, r.startY, r.angle, r.length));
+		return doIntersect(new Point2D.Double(b.x1, b.y1), new Point2D.Double(b.x2, b.y2), new Point2D.Double(r.startX, r.startY), getOppositeEnd(r.startX, r.startY, r.angle, r.length));
 	}
 	
-	public static Point getIntersection(Point p1, Point p2, Point q1, Point q2) {
+	public static Point2D.Double getIntersection(Point2D.Double p1, Point2D.Double p2, Point2D.Double q1, Point2D.Double q2) {
 		double pgrad = (p1.getY()-p2.getY())/(p1.getX()-p2.getX());
 		double qgrad = (q1.getY()-q2.getY())/(q1.getX()-q2.getX());
 		
@@ -91,40 +92,56 @@ public class LineHelper {
 		// mx-nx    = ma-nc+d-b
 		// x        = (ma-nc+d-b)/(m-n)		= (pgrad*p1.x - qgrad*q1.x + q1.y - p1.y)/(pgrad-qgrad)
 		
-		int xint = (int) ((pgrad * p1.x - qgrad * q1.x + q1.y - p1.y)/(pgrad - qgrad));
-		int yint = (int) (pgrad * (xint - p1.x) + p1.y);
+		double xint = (pgrad * p1.x - qgrad * q1.x + q1.y - p1.y)/(pgrad - qgrad);
+		double yint = pgrad * (xint - p1.x) + p1.y;
 		
-		return new Point(xint, yint);
+		return new Point2D.Double(xint, yint);
 	}
 	
-	public static Point getIntersection(Boundary b, RaySegment r) {
-		return getIntersection(new Point(b.x1, b.y1), new Point(b.x2, b.y2), new Point(r.startX, r.startY), getOppositeEnd(r.startX, r.startY, r.angle, r.length));
+	public static Point2D.Double getIntersection(Boundary b, RaySegment r) {
+		return getIntersection(new Point2D.Double(b.x1, b.y1), new Point2D.Double(b.x2, b.y2), new Point2D.Double(r.startX, r.startY), getOppositeEnd(r.startX, r.startY, r.angle, r.length));
 	}
 	
-	public static Point getOppositeEnd(Point start, double angle, double length) {
-		return new Point((int) (Math.sin(angle * Math.PI /180D) * length + start.x), (int) (Math.cos(angle * Math.PI /180D) * length + start.y));
+	public static Point2D.Double getOppositeEnd(Point2D.Double start, double angle, double length) {
+		return new Point2D.Double(Math.sin(angle * Math.PI /180D) * length + start.x, Math.cos(angle * Math.PI /180D) * length + start.y);
 	}
 	
-	public static Point getOppositeEnd(int x, int y, double angle, double length) {
-		return getOppositeEnd(new Point(x,y), angle, length);
+	public static Point2D.Double getOppositeEnd(double x, double y, double angle, double length) {
+		return getOppositeEnd(new Point2D.Double(x,y), angle, length);
+	}
+	
+	public static Point2D.Double getOppositeEnd(Point start, double y, double angle, double length) {
+		return getOppositeEnd(new Point2D.Double(start.x , start.y), angle, length);
 	}
 	
 	//public static double angleBetween(double grada, double gradb) {
 	//	return Math
 	//}
 	
-	public static double angleBetween(Point p1, Point p2, Point q1, Point q2) {
+	public static double angleBetween(Point2D.Double p1, Point2D.Double p2, Point2D.Double q1, Point2D.Double q2) {
 		double pgrad = (p1.getY()-p2.getY())/(p1.getX()-p2.getX());
 		double qgrad = (q1.getY()-q2.getY())/(q1.getX()-q2.getX());
 		return 90 - Math.atan((qgrad - pgrad)/(1 + pgrad * qgrad)) * (180D/Math.PI);
 	}
 
 	public static double angleBetween(Boundary b, RaySegment r) {
-		return angleBetween(new Point(b.x1, b.y1), new Point(b.x2, b.y2), new Point(r.startX, r.startY), getOppositeEnd(r.startX, r.startY, r.angle, r.length));
+		return angleBetween(new Point2D.Double(b.x1, b.y1), new Point2D.Double(b.x2, b.y2), new Point2D.Double(r.startX, r.startY), getOppositeEnd(r.startX, r.startY, r.angle, r.length));
+	}
+	
+	public static double angleBetween(Point p1, Point p2, Point q1, Point q2) {
+		return angleBetween(toDoublePoint(p1), toDoublePoint(p2), toDoublePoint(q1), toDoublePoint(q2));
 	}
 	
 	public static double gradientOfNormal(Point a, Point b) {
 		return (a.y - b.y)/(b.x - a.x);
+	}
+	
+	public static Point2D.Double toDoublePoint(Point p){
+		return new Point2D.Double(p.getX(), p.getY());
+	}
+	
+	public static Point toPoint(Point2D.Double p){
+		return new Point((int)p.getX(), (int)p.getY());
 	}
 	
 }

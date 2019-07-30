@@ -41,9 +41,9 @@ public class Display extends Canvas{
 			for(DebugMarker dbm : LightBending.markers)
 				dbm.render(g);
 			
-			g.setColor(Color.RED);
-			g.drawString(totalFrames + "", 5, this.getHeight()-10);
 		}
+		g.setColor(Color.RED);
+		g.drawString(totalFrames + "", 5, this.getHeight()-10);
 	}
 	
 }

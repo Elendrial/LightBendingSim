@@ -2,6 +2,7 @@ package me.elendrial.lightbending;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -26,11 +27,11 @@ public class LightBending {
 	public static ArrayList<Boundary>	 boundaryList  = new ArrayList<>(); // afaik no harm in having both list & map, they just store references
 	public static HashMap<Boundary, Prism> boundaryMap = new HashMap<>();
 	
-	public static boolean debug = true;
+	public static boolean debug = false;
 	public static ArrayList<DebugMarker> markers = new ArrayList<>();
 	
 	public static void main(String[] args) {
-		Window w = new Window("Light Bending", 1000, 800);
+		Window w = new Window("Light Bending", 1200, 800);
 		w.createDisplay();
 		w.start();
 		
@@ -38,30 +39,43 @@ public class LightBending {
 		///////////////////////////////// With a refractive index of 1, it should go straight through. Damn.
 		
 		// create system
-		RegularPrism pr = new RegularPrism(750, 500, 1, 0, 100, 0);
+		RegularPrism pr = new RegularPrism(550, 500, 1.2, 0, 100, 0);
 		prismList.add(pr);
 		pr.rotate(120);
 		
-		RegularPrism pr2 = new RegularPrism(750, 300, 1, 0, 100, 0);
+		RegularPrism pr2 = new RegularPrism(550, 300, 1.2, 0, 100, 0);
 		prismList.add(pr2);
 		pr2.rotate(180);
 		
-		LightSource ls = new LightSource(200, 500, new int[] {500}, new double[] {90});
-		sourceList.add(ls);
+		LightSource ls = new LightSource(300, 500, new int[] {500}, new double[] {90});
+		//sourceList.add(ls);
 		
-		LightSource ls2 = new LightSource(200, 300, new int[] {500}, new double[] {90});
-		sourceList.add(ls2);
-		/*
-		for(int i = 0; i < 1000; i++) {
-			ls.rotate(1);
-			pr2.rotate(1);
+		LightSource ls2 = new LightSource(300, 300, new int[] {500}, new double[] {90});
+	//	sourceList.add(ls2);
+		
+		
+		int amount = 25;
+		for(int i = 0; i < amount; i++) {
+			sourceList.add(new LightSource(100, (int)(200 + (400/amount) * i), new int[] {500}, new double[] {90}));
+		}
+		
+		RegularPrism pr3 = new RegularPrism(750, 400, 1.4, 0, 80, 0);
+		prismList.add(pr3);
+		pr3.rotate(30);
+		
+		for(int i = 0; i < 100000; i++) {
+		//	ls.rotate(1);
+			pr2.rotate(0.1);
+			pr.rotate(-0.1);
 			calculateBoundaries();
 			calculateRays();
-		
+			
 			w.render();
-			wait(100);
-		//w.render();
-		}*/
+			wait(25);
+			markers.clear();
+			//w.render();
+		}
+		
 		
 		calculateBoundaries();
 		calculateRays();
@@ -101,13 +115,13 @@ public class LightBending {
 			
 			do {
 				count++;
-				Point intersection = null;
-				Prism inside = null;
 				closest = null;
+				Prism inside = null;
+				Point2D.Double intersection = null;
+				Point2D.Double rayStart = new Point2D.Double(ray.curSeg.startX, ray.curSeg.startY);
 				double lowestDist = Double.MAX_VALUE, dist;
-				Point rayStart = new Point(ray.curSeg.startX, ray.curSeg.startY);
+
 				new DebugMarker(rayStart, Color.ORANGE,5);
-				
 				
 				for(Boundary b : boundaryList) {
 					if(LineHelper.doIntersect(b, ray.curSeg)) {
@@ -127,7 +141,7 @@ public class LightBending {
 					double angleBetween = LineHelper.angleBetween(closest, ray.curSeg);
 					ray.interactWithBoundary(intersection, ray.curSeg.angle, angleBetween, curRefractiveIndex, boundaryMap.get(closest).getRefractiveIndex(ray.wavelength), boundaryMap.get(closest).reflectiveness);
 				}
-			} while(closest != null && count < 2);
+			} while(closest != null && count < 5);
 		}
 		
 	}

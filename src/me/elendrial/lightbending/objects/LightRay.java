@@ -3,6 +3,7 @@ package me.elendrial.lightbending.objects;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 import me.elendrial.lightbending.LightBending;
@@ -14,16 +15,16 @@ public class LightRay {
 	public RaySegment curSeg;
 	public int wavelength;
 	
-	public LightRay(int wavelength, int startX, int startY, double startDirection) {
+	public LightRay(int wavelength, double centreX, double centreY, double startDirection) {
 		this.wavelength = wavelength;
 		
-		RaySegment startSegment = new RaySegment(startX, startY, startDirection);
+		RaySegment startSegment = new RaySegment(centreX, centreY, startDirection);
 		raySegments.add(startSegment);
 		curSeg = startSegment;
 	}
 	
 	ArrayList<Double> tempang = new ArrayList<>();
-	public void interactWithBoundary(Point intercept, double incAngle, double angleBetweenLines, double curRefractiveIndex, double newRefractiveIndex, double reflectiveness) {
+	public void interactWithBoundary(Point2D.Double intercept, double incAngle, double angleBetweenLines, double curRefractiveIndex, double newRefractiveIndex, double reflectiveness) {
 		// n1.sin(x1) = n2.sin(x2) - snell's law. -> x2 = asin(n1.sin(x1)/n2)
 		// n = refractive index, x = angle
 		// ray segment: x point: a, y point: b, angle theta: d		 y = m.x + c ->     y = tan(d) (x - a) + b?
@@ -62,13 +63,13 @@ public class LightRay {
 		// TODO: Use wavelength to change the colour
 		int i = 0;
 		for(RaySegment r : raySegments) {
-			Point otherend = LineHelper.getOppositeEnd(r.startX, r.startY, r.angle, r.length);
-			g.drawLine(r.startX, r.startY, otherend.x, otherend.y);
+			Point otherend = LineHelper.toPoint(LineHelper.getOppositeEnd(r.renderX, r.renderY, r.angle, r.length));
+			g.drawLine(r.renderX, r.renderY, otherend.x, otherend.y);
 			if(LightBending.debug) {
 				g.setColor(Color.red);
-				g.drawRect(r.startX - 2, r.startY - 2, 4, 4);
-				g.drawString((r.angle + "     ").substring(0, 5), r.startX-20, r.startY+15);
-				if(i >0) g.drawString("angle between lines: " + (tempang.get(i-1) + "     ").substring(0, 5), r.startX-60, r.startY-13);
+				g.drawRect(r.renderX - 2, r.renderY - 2, 4, 4);
+				g.drawString((r.angle + "     ").substring(0, 5), r.renderX-20, r.renderY+15);
+				if(i >0) g.drawString("angle between lines: " + (tempang.get(i-1) + "     ").substring(0, 5), r.renderX-60, r.renderY-13);
 				g.setColor(Color.WHITE);
 			}
 			i++;
@@ -76,14 +77,18 @@ public class LightRay {
 	}
 
 	public static class RaySegment{
-		public int startX, startY;
+		public int renderX, renderY;
+		public double startX, startY;
 		public double angle;
 		public double length = 1000;
 		
-		public RaySegment(int x, int y, double angle) {
-			this.startX = x;
-			this.startY = y;
+		public RaySegment(double centreX, double centreY, double angle) {
+			this.startX = centreX;
+			this.startY = centreY;
 			this.angle = angle;
+			
+			this.renderX = (int) startX;
+			this.renderY = (int) startY;
 		}
 		
 	}
