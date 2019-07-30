@@ -17,6 +17,10 @@ public class Boundary {
 		if(x1-x2 != 0) gradient = (y1-y2)/(x1-x2);
 	}
 	
+	public Boundary(double x1, double y1, double x2, double y2 ) {
+		this((int) x1, (int) y1, (int) x2, (int) y2);
+	}
+	
 	public void render(Graphics g) {
 		g.drawLine(x1, y1, x2, y2);
 	}

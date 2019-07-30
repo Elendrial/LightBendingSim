@@ -90,7 +90,7 @@ public class LightBending {
 		boundaryList.clear();
 		boundaryMap.clear();
 		for(Prism p : prismList) {
-			ArrayList<Point> vertices = p.vertices;
+			ArrayList<Point2D.Double> vertices = p.vertices;
 			for(int i = 0; i < vertices.size() - 1; i++) {
 				Boundary b = new Boundary(vertices.get(i).x, vertices.get(i).y, vertices.get(i+1).x, vertices.get(i+1).y);
 				boundaryList.add(b);
