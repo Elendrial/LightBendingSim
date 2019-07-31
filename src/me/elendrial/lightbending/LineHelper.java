@@ -119,9 +119,10 @@ public class LineHelper {
 	//}
 	
 	public static double angleBetween(Point2D.Double p1, Point2D.Double p2, Point2D.Double q1, Point2D.Double q2) {
-		double pgrad = (p1.getY()-p2.getY())/(p1.getX()-p2.getX());
+		/*double pgrad = (p1.getY()-p2.getY())/(p1.getX()-p2.getX());
 		double qgrad = (q1.getY()-q2.getY())/(q1.getX()-q2.getX());
-		return 90 - Math.atan((qgrad - pgrad)/(1 + pgrad * qgrad)) * (180D/Math.PI);
+		return 90 - Math.atan((qgrad - pgrad)/(1 + pgrad * qgrad)) * (180D/Math.PI);*/
+		return 180 - ((angleOfLine(p1, p2) - angleOfLine(q1, q2) + 180)%180);
 	}
 
 	public static double angleBetween(Boundary b, RaySegment r) {
@@ -142,6 +143,20 @@ public class LineHelper {
 	
 	public static Point toPoint(Point2D.Double p){
 		return new Point((int)p.getX(), (int)p.getY());
+	}
+	
+	public static double angleOfLine(Point2D.Double a, Point2D.Double b) {
+		// NB: this is against vertically downwards
+		if(a.y-b.y == 0) return 180;
+		return 180 - (Math.atan((a.x-b.x)/(a.y-b.y)) * (180/Math.PI));
+	}
+	
+	public static double angleOfLine(RaySegment r) {
+		return angleOfLine(new Point2D.Double(r.startX, r.startY), getOppositeEnd(r.startX, r.startY, r.angle, r.length));
+	}
+	
+	public static double angleOfLine(Boundary b) {
+		return angleOfLine(new Point2D.Double(b.x1, b.y1), new Point2D.Double(b.x2, b.y2));
 	}
 	
 }
