@@ -33,17 +33,18 @@ public class LightBending {
 		Window w = new Window("Light Bending", 1200, 800);
 		w.createDisplay();
 		w.start();
+		w.getCamera().translate(200, 0);
 		
 		createSystem(w);
 		
 		calculateBoundaries();
 		calculateRays();
-
+		
 		for(int i = 0; i < 100000; i++) {
-			((RegularPrism) prismList.get(1)).rotate(0.05);
-			((RegularPrism) prismList.get(0)).rotate(-0.05);
+			((RegularPrism) prismList.get(1)).rotate(0.025);
+			((RegularPrism) prismList.get(0)).rotate(-0.025);
 			
-			update(w, 10);
+			update(w, 4);
 		}
 		
 		renderOnce(w);
@@ -53,21 +54,21 @@ public class LightBending {
 		// create system
 		RegularPrism pr = new RegularPrism(550, 500, 1.2, 0, 100, 0);
 		prismList.add(pr);
-		pr.rotate(120);
+		pr.rotate(120); // 120
 		
 		RegularPrism pr2 = new RegularPrism(550, 300, 1.2, 0, 100, 0);
 		prismList.add(pr2);
-		pr2.rotate(180);
-
-		//LightSource ls = new LightSource(300, 500, new int[] { 500 }, new double[] { 90 });
-		// sourceList.add(ls);
-
+		pr2.rotate(180); // 180
+		
+		//LightSource ls = new LightSource(100, 500, new int[] { 500 }, new double[] { 90 });
+		//sourceList.add(ls);
+		
 		//LightSource ls2 = new LightSource(300, 300, new int[] { 500 }, new double[] { 90 });
 		// sourceList.add(ls2);
-
-		int amount = 5 + (-1);
+		
+		int amount = 200 + (-1);
 		for (int i = 0; i < amount + 1; i++) {
-			if(i == 1 || i == 3) sourceList.add(new LightSource(100, (int) (200+(400/amount)*i), new int[] {500}, new double[] {90}).rotate(0));
+			sourceList.add(new LightSource(100, (int) (200+(400/amount)*i), new int[] {500}, new double[] {90}).rotate(0));
 		}
 		
 		RegularPrism pr3 = new RegularPrism(750, 400, 1.4, 0, 80, 0);
@@ -84,7 +85,7 @@ public class LightBending {
 	public static void update(Window w, int time) {
 		calculateBoundaries();
 		calculateRays();
-			
+		
 		w.render();
 		wait(time);
 		markers.clear();
@@ -111,12 +112,12 @@ public class LightBending {
 		for(LightSource ls : sourceList)
 			rayList.addAll(ls.getRays());
 		
+		
 		for(LightRay ray : rayList) {
 			
 			Boundary closest, lastRefracted = null;
 			Prism inside = null;
 			int count = 0;
-			
 			
 			do {
 				count++;
@@ -124,7 +125,7 @@ public class LightBending {
 				Point2D.Double intersection = null, tempIntersection = null;
 				Point2D.Double rayStart = new Point2D.Double(ray.curSeg.startX, ray.curSeg.startY);
 				double lowestDist = Double.MAX_VALUE, dist;
-
+				
 				new DebugMarker(rayStart, Color.ORANGE,5);
 				
 				for(Boundary b : boundaryList) {
@@ -150,11 +151,11 @@ public class LightBending {
 					double newRefractiveIndex = inside == closestP ? 1 : closestP.getRefractiveIndex(ray.wavelength);
 					double angleBetween = LineHelper.angleBetween(closest, ray.curSeg);
 					
-					ray.interactWithBoundary(intersection, ray.curSeg.angle, angleBetween, curRefractiveIndex, newRefractiveIndex, boundaryMap.get(closest).reflectiveness);
+					boolean reflected = ray.interactWithBoundary(intersection, ray.curSeg.angle, angleBetween, curRefractiveIndex, newRefractiveIndex, boundaryMap.get(closest).reflectiveness);
 					
-					inside = inside == closestP ? null : closestP;
+					if(!reflected) inside = inside == closestP ? null : closestP;
 				}
-			} while(closest != null && count < 5);
+			} while(closest != null && count < 100);
 		}
 		
 	}

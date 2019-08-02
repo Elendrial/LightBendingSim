@@ -122,6 +122,8 @@ public class LineHelper {
 		/*double pgrad = (p1.getY()-p2.getY())/(p1.getX()-p2.getX());
 		double qgrad = (q1.getY()-q2.getY())/(q1.getX()-q2.getX());
 		return 90 - Math.atan((qgrad - pgrad)/(1 + pgrad * qgrad)) * (180D/Math.PI);*/
+		//double delta = angleOfLine(p1, p2) - angleOfLine(q1, q2);
+		//if(delta < 0) delta += 180;
 		return 180 - ((angleOfLine(p1, p2) - angleOfLine(q1, q2) + 180)%180);
 	}
 
@@ -147,7 +149,7 @@ public class LineHelper {
 	
 	public static double angleOfLine(Point2D.Double a, Point2D.Double b) {
 		// NB: this is against vertically downwards
-		if(a.y-b.y == 0) return 180;
+		if(a.y-b.y == 0) return 0;
 		return 180 - (Math.atan((a.x-b.x)/(a.y-b.y)) * (180/Math.PI));
 	}
 	

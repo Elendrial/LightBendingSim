@@ -24,7 +24,7 @@ public class LightRay {
 	}
 	
 	ArrayList<Double> tempang = new ArrayList<>();
-	public void interactWithBoundary(Point2D.Double intercept, double incAngle, double angleBetweenLines, double curRefractiveIndex, double newRefractiveIndex, double reflectiveness) {
+	public boolean interactWithBoundary(Point2D.Double intercept, double incAngle, double angleBetweenLines, double curRefractiveIndex, double newRefractiveIndex, double reflectiveness) {
 		// n1.sin(x1) = n2.sin(x2) - snell's law. -> x2 = asin(n1.sin(x1)/n2)
 		// n = refractive index, x = angle
 		// ray segment: x point: a, y point: b, angle theta: d		 y = m.x + c ->     y = tan(d) (x - a) + b?
@@ -39,14 +39,34 @@ public class LightRay {
 		tempang.add(angleBetweenLines);
 		
 		double angleofincidence = angleBetweenLines - 90;
-		double angleofrefraction = Math.asin(curRefractiveIndex * Math.sin(angleofincidence * Math.PI/180D) / newRefractiveIndex) * (180D/Math.PI);
+		double angleofrefraction = 0;
+		boolean reflected = false;
+		
+		if(newRefractiveIndex < curRefractiveIndex) {
+			double critAngle = Math.abs(Math.asin(newRefractiveIndex/curRefractiveIndex) * 180D/Math.PI);
+			if(Math.abs(angleofincidence) < critAngle) angleofrefraction = Math.asin(curRefractiveIndex * Math.sin(angleofincidence * Math.PI/180D) / newRefractiveIndex) * (180D/Math.PI);
+			else{
+				angleofrefraction = 180 - angleofincidence; //??????
+				reflected = true;
+			}
+		}
+		else {
+			angleofrefraction = Math.asin(curRefractiveIndex * Math.sin(angleofincidence * Math.PI/180D) / newRefractiveIndex) * (180D/Math.PI);
+		}
+		
 		curSeg.length = Math.sqrt(Math.pow(curSeg.startX - intercept.x, 2) + Math.pow(curSeg.startY - intercept.y, 2));
 		
+		//System.out.println((incAngle + "   ").substring(0, 5) + ":" + 
+		//				   (angleBetweenLines + "   ").substring(0, 5) + ":" + 
+		//				   (angleofincidence + "   ").substring(0, 5) + ":" + 
+		//				   (angleofrefraction + "   ").substring(0, 5));
 		//if(angleBetweenLines > 45) angleofrefraction = 90 + (90 - angleofrefraction);
 		
 		RaySegment newsegment = new RaySegment(intercept.x, intercept.y, incAngle - (angleofrefraction - angleofincidence));
 		raySegments.add(newsegment);
 		curSeg = newsegment;
+		
+		return reflected;
 	}
 	
 	/* Possible TODO:
@@ -80,7 +100,7 @@ public class LightRay {
 		public int renderX, renderY;
 		public double startX, startY;
 		public double angle;
-		public double length = 1000;
+		public double length = 2000;
 		
 		public RaySegment(double centreX, double centreY, double angle) {
 			this.startX = centreX;
