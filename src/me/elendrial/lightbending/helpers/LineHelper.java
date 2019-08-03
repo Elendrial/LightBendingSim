@@ -114,16 +114,7 @@ public class LineHelper {
 		return getOppositeEnd(new Point2D.Double(start.x , start.y), angle, length);
 	}
 	
-	//public static double angleBetween(double grada, double gradb) {
-	//	return Math
-	//}
-	
 	public static double angleBetween(Point2D.Double p1, Point2D.Double p2, Point2D.Double q1, Point2D.Double q2) {
-		/*double pgrad = (p1.getY()-p2.getY())/(p1.getX()-p2.getX());
-		double qgrad = (q1.getY()-q2.getY())/(q1.getX()-q2.getX());
-		return 90 - Math.atan((qgrad - pgrad)/(1 + pgrad * qgrad)) * (180D/Math.PI);*/
-		//double delta = angleOfLine(p1, p2) - angleOfLine(q1, q2);
-		//if(delta < 0) delta += 180;
 		return 180 - ((angleOfLine(p1, p2) - angleOfLine(q1, q2) + 180)%180);
 	}
 

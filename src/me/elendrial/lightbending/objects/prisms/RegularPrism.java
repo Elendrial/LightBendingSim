@@ -8,8 +8,8 @@ public class RegularPrism extends Prism {
 	public double distFromOrigin;
 	public double angle;
 	
-	public RegularPrism(int x, int y, double refractiveIndex, double reflectiveness, double distFromOrigin, double angle) {
-		super(x, y, reflectiveness);
+	public RegularPrism(int x, int y, double refractiveIndex, double distFromOrigin, double angle) {
+		super(x, y, 0f);
 		this.refractiveIndex = refractiveIndex;
 		this.distFromOrigin = distFromOrigin;
 		this.angle = (angle + 180) % 360;

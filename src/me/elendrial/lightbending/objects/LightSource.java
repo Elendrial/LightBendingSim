@@ -1,5 +1,6 @@
 package me.elendrial.lightbending.objects;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
@@ -9,6 +10,7 @@ public class LightSource extends GraphicalObject{
 
 	public int[] wavelengths;
 	public double[] directions;
+	public Color overrideColor = null;
 	
 	public LightSource(int x, int y, int[] wavelengths, double[] directions) {
 		super(x, y);
@@ -29,12 +31,17 @@ public class LightSource extends GraphicalObject{
 		for(double d : directions) {
 			for(int w : wavelengths) {
 				LightRay lr = new LightRay(w, centreX, centreY, d);
-				lr.c = ColourHelper.waveLengthToColor(w);
+				lr.c = overrideColor == null ? ColourHelper.waveLengthToColor(w) : overrideColor;
 				rays.add(lr);
 			}
 		}
 		
 		return rays;
+	}
+	
+	public LightSource setOverrideColorColour(Color c) {
+		overrideColor = c;
+		return this;
 	}
 	
 	public void render(Graphics g) {}

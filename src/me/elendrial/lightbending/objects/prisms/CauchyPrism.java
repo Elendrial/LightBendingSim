@@ -4,12 +4,12 @@ public class CauchyPrism extends RegularPrism{
 
 	public int cmodifier = 0;
 	
-	public CauchyPrism(int x, int y, double refractiveIndex, double reflectiveness, double distFromOrigin, double angle) {
-		super(x, y, refractiveIndex, reflectiveness, distFromOrigin, angle);
+	public CauchyPrism(int x, int y, double refractiveIndex, double distFromOrigin, double angle) {
+		super(x, y, refractiveIndex, distFromOrigin, angle);
 	}
 	
-	public CauchyPrism(int x, int y, double refractiveIndex, double reflectiveness, double distFromOrigin, double angle, int cmodifier) {
-		this(x, y, refractiveIndex, reflectiveness, distFromOrigin, angle);
+	public CauchyPrism(int x, int y, double refractiveIndex, double distFromOrigin, double angle, int cmodifier) {
+		this(x, y, refractiveIndex, distFromOrigin, angle);
 		cmodifier = this.cmodifier;
 	}
 

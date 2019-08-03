@@ -14,8 +14,6 @@ public class LightRay {
 	public ArrayList<RaySegment> raySegments = new ArrayList<>();
 	public RaySegment curSeg;
 	public int wavelength;
-	
-	// TEMPORARY
 	public Color c = Color.white;
 	
 	public LightRay(int wavelength, double centreX, double centreY, double startDirection) {
@@ -29,58 +27,30 @@ public class LightRay {
 	ArrayList<Double> tempang = new ArrayList<>();
 	public boolean interactWithBoundary(Point2D.Double intercept, double incAngle, double angleBetweenLines, double curRefractiveIndex, double newRefractiveIndex, double reflectiveness) {
 		// n1.sin(x1) = n2.sin(x2) - snell's law. -> x2 = asin(n1.sin(x1)/n2)
-		// n = refractive index, x = angle
-		// ray segment: x point: a, y point: b, angle theta: d		 y = m.x + c ->     y = tan(d) (x - a) + b?
-		// ugh gcse maths & physics, should be easy but my brain is melting in this bloody heat (*written July 25th 2019, trending twitter hashtag: "#hottestdayoftheyear")
-		// boundary: x point: e, y point: f, gradient m				y = m (x - e) + f
-		
-		// y = tan(d) (x - a) + b
-		// y = m (x - e) + f
-		// x = (f-me-b+tan(d)a)/(tan(d)-m)
-		
-		// double curGrad = Math.tan(curSeg.angle * Math.PI/180D);
-		tempang.add(angleBetweenLines);
+		if(LightBending.debug) tempang.add(angleBetweenLines);
 		
 		double angleofincidence = angleBetweenLines - 90;
 		double angleofrefraction = 0;
-		boolean reflected = false;
+		boolean reflecting = false;
 		
-		if(newRefractiveIndex < curRefractiveIndex) {
+		if(reflectiveness == 1) reflecting = true;
+		else if(newRefractiveIndex < curRefractiveIndex) {
 			double critAngle = Math.abs(Math.asin(newRefractiveIndex/curRefractiveIndex) * 180D/Math.PI);
-			if(Math.abs(angleofincidence) < critAngle) angleofrefraction = Math.asin(curRefractiveIndex * Math.sin(angleofincidence * Math.PI/180D) / newRefractiveIndex) * (180D/Math.PI);
-			else{
-				angleofrefraction = 180 - angleofincidence; //??????
-				reflected = true;
-			}
+			
+			if(Math.abs(angleofincidence) > critAngle) reflecting = true;
 		}
-		else {
-			angleofrefraction = Math.asin(curRefractiveIndex * Math.sin(angleofincidence * Math.PI/180D) / newRefractiveIndex) * (180D/Math.PI);
-		}
+		
+		if(reflecting) angleofrefraction = 180 - angleofincidence;
+		else angleofrefraction = Math.asin(curRefractiveIndex * Math.sin(angleofincidence * Math.PI/180D) / newRefractiveIndex) * (180D/Math.PI);
 		
 		curSeg.length = Math.sqrt(Math.pow(curSeg.startX - intercept.x, 2) + Math.pow(curSeg.startY - intercept.y, 2));
-		
-		//System.out.println((incAngle + "   ").substring(0, 5) + ":" + 
-		//				   (angleBetweenLines + "   ").substring(0, 5) + ":" + 
-		//				   (angleofincidence + "   ").substring(0, 5) + ":" + 
-		//				   (angleofrefraction + "   ").substring(0, 5));
-		//if(angleBetweenLines > 45) angleofrefraction = 90 + (90 - angleofrefraction);
 		
 		RaySegment newsegment = new RaySegment(intercept.x, intercept.y, incAngle - (angleofrefraction - angleofincidence));
 		raySegments.add(newsegment);
 		curSeg = newsegment;
 		
-		return reflected;
+		return reflecting;
 	}
-	
-	/* Possible TODO:
-	public void interactWithGap()
-	 
-	
-	public ArrayList<RaySegment> endSegments = new ArrayList<>(); // for if the light splits.
-	public ArrayList<RaySegment> getEnds(){
-		return endSegments;
-	}
-	*/
 	
 	public void render(Graphics g) {
 		int i = 0;

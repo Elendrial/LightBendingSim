@@ -17,11 +17,11 @@ public class Setups {
 	public static void create3Prisms(Window w) {
 		w.getCamera().translate(150, 0);
 		
-		RegularPrism pr = new RegularPrism(550, 500, 1.33, 0, 100, 0);
+		RegularPrism pr = new RegularPrism(550, 500, 1.33, 100, 0);
 		prismList.add(pr);
 		pr.rotate(30);
 		
-		RegularPrism pr2 = new RegularPrism(550, 300, 1.33, 0, 100, 0);
+		RegularPrism pr2 = new RegularPrism(550, 300, 1.33, 100, 0);
 		prismList.add(pr2);
 		pr2.rotate(30);
 		
@@ -37,7 +37,7 @@ public class Setups {
 			}.rotate(0));
 		}
 		
-		RegularPrism pr3 = new RegularPrism(750, 400, 1.4, 0, 80, 0);
+		RegularPrism pr3 = new RegularPrism(750, 400, 1.4, 80, 0);
 		prismList.add(pr3);
 		pr3.rotate(90);
 	}
@@ -53,15 +53,15 @@ public class Setups {
 	
 	public static void create3CauchyPrisms(Window w) {
 		// create system
-		CauchyPrism pr = new CauchyPrism(550, 500, 1.2, 0, 100, 0);
+		CauchyPrism pr = new CauchyPrism(550, 500, 1.2, 100, 0);
 		prismList.add(pr);
 		pr.rotate(120);
 		
-		CauchyPrism pr2 = new CauchyPrism(550, 300, 1.2, 0, 100, 0);
+		CauchyPrism pr2 = new CauchyPrism(550, 300, 1.2, 100, 0);
 		prismList.add(pr2);
 		pr2.rotate(180);
 		
-		CauchyPrism pr3 = new CauchyPrism(750, 400, 1.4, 0, 80, 0);
+		CauchyPrism pr3 = new CauchyPrism(750, 400, 1.4, 80, 0);
 		prismList.add(pr3);
 		pr3.rotate(90);
 		
@@ -76,14 +76,15 @@ public class Setups {
 	public static void create3CauchyPrisms2(Window w) {
 		w.getCamera().translate(150, 0);
 		
-		CauchyPrism pr = new CauchyPrism(550, 500, 1.33, 0, 100, 0);
+		CauchyPrism pr = new CauchyPrism(550, 500, 1.33, 100, 0);
 		prismList.add(pr);
 		pr.rotate(30);
 		
-		CauchyPrism pr2 = new CauchyPrism(550, 300, 1.33, 0, 100, 0);
+		CauchyPrism pr2 = new CauchyPrism(550, 300, 1.33, 100, 0);
 		prismList.add(pr2);
 		pr2.rotate(30);
 		
+		// TODO: Change this to use overrideColor
 		final int amount = 400 + (-1);
 		AtomicInteger h = new AtomicInteger(0);
 		for (int i = 0; i < amount + 1; i++) {
@@ -96,17 +97,17 @@ public class Setups {
 			}.rotate(0));
 		}
 		
-		CauchyPrism pr3 = new CauchyPrism(750, 400, 1.4, 0, 80, 0);
+		CauchyPrism pr3 = new CauchyPrism(750, 400, 1.4, 80, 0);
 		prismList.add(pr3);
 		pr3.rotate(90);
 	}
 	
 	public static void createClassicPrismDemo(Window w) {
-		CauchyPrism pr = new CauchyPrism(330, 450, 1.2, 0, 300, 0);
+		CauchyPrism pr = new CauchyPrism(330, 450, 1.2, 300, 0);
 		prismList.add(pr);
 		pr.rotate(120);
 		
-		CauchyPrism pr2 = new CauchyPrism(900, 300, 1.2, 0, 300, 0);
+		CauchyPrism pr2 = new CauchyPrism(900, 300, 1.2, 300, 0);
 		prismList.add(pr2);
 		pr2.rotate(180);
 		
