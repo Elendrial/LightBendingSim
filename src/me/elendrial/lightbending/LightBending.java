@@ -25,27 +25,27 @@ public class LightBending {
 	public static ArrayList<Boundary>	 boundaryList  = new ArrayList<>(); // afaik no harm in having both list & map, they just store references
 	public static HashMap<Boundary, Prism> boundaryMap = new HashMap<>();
 	
-	public static boolean debug = false;
 	public static ArrayList<DebugMarker> markers = new ArrayList<>();
+	public static Window w = new Window("Light Bending", 1200, 800);
 	
 	public static void main(String[] args) {
-		Window w = new Window("Light Bending", 1200, 800);
 		w.createDisplay();
 		w.start();
 		
-		Setups.create3CauchyPrisms2(w);
+		//Setups.createClassicPrismDemo(w);
+		Setups.generateTrueRandomSetup(w);
 		
 		calculateBoundaries();
 		calculateRays();
 		
 		//Setups.update3Prisms(w);
 		
-		renderOnce(w);
-	}
-	
-	public static void renderOnce(Window w) {
 		w.render();
 		wait(100);
+		render();
+	}
+	
+	public static void render() {
 		w.render();
 	}
 	
@@ -79,6 +79,7 @@ public class LightBending {
 		for(LightSource ls : sourceList)
 			rayList.addAll(ls.getRays());
 		
+		if(Settings.rayInteractions <= 0) return;
 		
 		for(LightRay ray : rayList) {
 			
@@ -122,7 +123,7 @@ public class LightBending {
 					
 					if(!reflected) inside = inside == closestP ? null : closestP;
 				}
-			} while(closest != null && count < 100);
+			} while(closest != null && count < Settings.rayInteractions);
 		}
 		
 	}

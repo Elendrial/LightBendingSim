@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import me.elendrial.lightbending.LightBending;
+import me.elendrial.lightbending.Settings;
 import me.elendrial.lightbending.debug.DebugMarker;
 import me.elendrial.lightbending.objects.Boundary;
 import me.elendrial.lightbending.objects.LightRay;
@@ -28,19 +29,25 @@ public class Display extends Canvas{
 		
 		
 		g.setColor(Color.WHITE);
-		for(Boundary b : LightBending.boundaryList)
-			b.render(g);
+		if(Settings.renderPrisms)
+			for(Boundary b : LightBending.boundaryList)
+				b.render(g);
 		
-		for(LightRay l : LightBending.rayList)
-			l.render(g);
+		if(Settings.renderLightRays)
+				for(LightRay l : LightBending.rayList)
+					l.render(g);
 		
-		if(LightBending.debug) {
+		if(Settings.debug) {
 			for(DebugMarker dbm : LightBending.markers)
 				dbm.render(g);
 		}
 		
 		g.setColor(Color.RED);
-		g.drawString(totalFrames + "", 5, this.getHeight()-10);
+		if(Settings.renderInfo)
+			g.drawString(Settings.rayInteractions + "", 5, this.getHeight()-10);
+		
+		if(Settings.debug)
+			g.drawString(totalFrames + "", 30, this.getHeight()-10);
 	}
 	
 }

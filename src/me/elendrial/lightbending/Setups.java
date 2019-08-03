@@ -44,6 +44,7 @@ public class Setups {
 	}
 	
 	public static void update3Prisms(Window w) {
+		Settings.constantlyUpdating = true;
 		for(int i = 0; i < 100000; i++) {
 			((RegularPrism) prismList.get(1)).rotate(0.025);
 			((RegularPrism) prismList.get(0)).rotate(-0.025);

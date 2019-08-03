@@ -37,6 +37,7 @@ public class Window {
 	public void createDisplay(){
 		this.display = new Display(this);
 		// Add listeners here if needed
+		this.display.addKeyListener(new InputHandler());
 		this.frame.add(this.display);
 	}
 

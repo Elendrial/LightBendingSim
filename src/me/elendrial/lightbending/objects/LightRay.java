@@ -6,7 +6,7 @@ import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
-import me.elendrial.lightbending.LightBending;
+import me.elendrial.lightbending.Settings;
 import me.elendrial.lightbending.helpers.LineHelper;
 
 public class LightRay {
@@ -27,7 +27,7 @@ public class LightRay {
 	ArrayList<Double> tempang = new ArrayList<>();
 	public boolean interactWithBoundary(Point2D.Double intercept, double incAngle, double angleBetweenLines, double curRefractiveIndex, double newRefractiveIndex, double reflectiveness) {
 		// n1.sin(x1) = n2.sin(x2) - snell's law. -> x2 = asin(n1.sin(x1)/n2)
-		if(LightBending.debug) tempang.add(angleBetweenLines);
+		if(Settings.debug) tempang.add(angleBetweenLines);
 		
 		double angleofincidence = angleBetweenLines - 90;
 		double angleofrefraction = 0;
@@ -60,7 +60,7 @@ public class LightRay {
 			g.setColor(c);
 			g.drawLine(r.renderX, r.renderY, otherend.x, otherend.y);
 			
-			if(LightBending.debug) {
+			if(Settings.debug) {
 				g.setColor(Color.red);
 				g.drawRect(r.renderX - 2, r.renderY - 2, 4, 4);
 				g.drawString((r.angle + "     ").substring(0, 5), r.renderX-20, r.renderY+15);
