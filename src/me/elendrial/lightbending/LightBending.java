@@ -7,11 +7,11 @@ import java.util.HashMap;
 
 import me.elendrial.lightbending.debug.DebugMarker;
 import me.elendrial.lightbending.graphics.Window;
+import me.elendrial.lightbending.helpers.LineHelper;
 import me.elendrial.lightbending.objects.Boundary;
 import me.elendrial.lightbending.objects.LightRay;
 import me.elendrial.lightbending.objects.LightSource;
-import me.elendrial.lightbending.objects.Prism;
-import me.elendrial.lightbending.objects.RegularPrism;
+import me.elendrial.lightbending.objects.prisms.Prism;
 
 // NB: All angles are degrees, not radians. Any function needing angles will convert them to radians internally to comply with java. This is simply because I'm more used to them.
 // To recalculate all the light rays after changing any prisms, you must call calculateBoundaries() and then calculateRays(). If you move light sources then just calculateRays()
@@ -33,47 +33,15 @@ public class LightBending {
 		Window w = new Window("Light Bending", 1200, 800);
 		w.createDisplay();
 		w.start();
-		w.getCamera().translate(200, 0);
 		
-		createSystem(w);
+		Setups.create3CauchyPrisms2(w);
 		
 		calculateBoundaries();
 		calculateRays();
 		
-		for(int i = 0; i < 100000; i++) {
-			((RegularPrism) prismList.get(1)).rotate(0.025);
-			((RegularPrism) prismList.get(0)).rotate(-0.025);
-			
-			update(w, 4);
-		}
+		//Setups.update3Prisms(w);
 		
 		renderOnce(w);
-	}
-	
-	public static void createSystem(Window w) {
-		// create system
-		RegularPrism pr = new RegularPrism(550, 500, 1.2, 0, 100, 0);
-		prismList.add(pr);
-		pr.rotate(120); // 120
-		
-		RegularPrism pr2 = new RegularPrism(550, 300, 1.2, 0, 100, 0);
-		prismList.add(pr2);
-		pr2.rotate(180); // 180
-		
-		//LightSource ls = new LightSource(100, 500, new int[] { 500 }, new double[] { 90 });
-		//sourceList.add(ls);
-		
-		//LightSource ls2 = new LightSource(300, 300, new int[] { 500 }, new double[] { 90 });
-		// sourceList.add(ls2);
-		
-		int amount = 200 + (-1);
-		for (int i = 0; i < amount + 1; i++) {
-			sourceList.add(new LightSource(100, (int) (200+(400/amount)*i), new int[] {500}, new double[] {90}).rotate(0));
-		}
-		
-		RegularPrism pr3 = new RegularPrism(750, 400, 1.4, 0, 80, 0);
-		prismList.add(pr3);
-		pr3.rotate(30);
 	}
 	
 	public static void renderOnce(Window w) {

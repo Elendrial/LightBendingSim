@@ -1,8 +1,10 @@
-package me.elendrial.lightbending.objects;
+package me.elendrial.lightbending.objects.prisms;
 
 import java.awt.Graphics;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+
+import me.elendrial.lightbending.objects.GraphicalObject;
 
 abstract public class Prism extends GraphicalObject {
 	

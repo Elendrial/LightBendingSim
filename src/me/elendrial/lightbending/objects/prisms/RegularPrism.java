@@ -1,4 +1,4 @@
-package me.elendrial.lightbending.objects;
+package me.elendrial.lightbending.objects.prisms;
 
 import java.awt.geom.Point2D;
 

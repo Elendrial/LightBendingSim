@@ -3,6 +3,8 @@ package me.elendrial.lightbending.objects;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
+import me.elendrial.lightbending.helpers.ColourHelper;
+
 public class LightSource extends GraphicalObject{
 
 	public int[] wavelengths;
@@ -27,6 +29,7 @@ public class LightSource extends GraphicalObject{
 		for(double d : directions) {
 			for(int w : wavelengths) {
 				LightRay lr = new LightRay(w, centreX, centreY, d);
+				lr.c = ColourHelper.waveLengthToColor(w);
 				rays.add(lr);
 			}
 		}

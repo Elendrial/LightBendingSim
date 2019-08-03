@@ -1,4 +1,4 @@
-package me.elendrial.lightbending;
+package me.elendrial.lightbending.helpers;
 
 import java.awt.Point;
 import java.awt.geom.Point2D;
@@ -12,7 +12,7 @@ public class LineHelper {
 
 	// Given three colinear points p, q, r, the function checks if
 	// point q lies on line segment 'pr'
-	static boolean onSegment(Point2D.Double p, Point2D.Double q, Point2D.Double r) {
+	public static boolean onSegment(Point2D.Double p, Point2D.Double q, Point2D.Double r) {
 		if (q.x <= Math.max(p.x, r.x) && q.x >= Math.min(p.x, r.x) && q.y <= Math.max(p.y, r.y)
 				&& q.y >= Math.min(p.y, r.y))
 			return true;
@@ -25,7 +25,7 @@ public class LineHelper {
 	// 0 --> p, q and r are colinear
 	// 1 --> Clockwise
 	// 2 --> Counterclockwise
-	static int orientation(Point2D.Double p, Point2D.Double q, Point2D.Double r) {
+	public static int orientation(Point2D.Double p, Point2D.Double q, Point2D.Double r) {
 		// See https://www.geeksforgeeks.org/orientation-3-ordered-points/
 		// for details of below formula.
 		double val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
@@ -38,7 +38,7 @@ public class LineHelper {
 
 	// The main function that returns true if line segment 'p1q1'
 	// and 'p2q2' intersect.
-	static boolean doIntersect(Point2D.Double p1, Point2D.Double q1, Point2D.Double p2, Point2D.Double q2) {
+	public static boolean doIntersect(Point2D.Double p1, Point2D.Double q1, Point2D.Double p2, Point2D.Double q2) {
 		// Find the four orientations needed for general and
 		// special cases
 		int o1 = orientation(p1, q1, p2);
@@ -72,11 +72,11 @@ public class LineHelper {
 	
 	// End of nabbed code
 	
-	static boolean doIntersect(double xa1, double ya1, double xa2, double ya2, double xb1, double yb1, double xb2, double yb2) {
+	public static boolean doIntersect(double xa1, double ya1, double xa2, double ya2, double xb1, double yb1, double xb2, double yb2) {
 		return doIntersect(new Point2D.Double(xa1, ya1), new Point2D.Double(xa2, ya2), new Point2D.Double(xb1, yb1), new Point2D.Double(xb2, yb2));
 	}
 	
-	static boolean doIntersect(Boundary b, RaySegment r) {
+	public static boolean doIntersect(Boundary b, RaySegment r) {
 		return doIntersect(new Point2D.Double(b.x1, b.y1), new Point2D.Double(b.x2, b.y2), new Point2D.Double(r.startX, r.startY), getOppositeEnd(r.startX, r.startY, r.angle, r.length));
 	}
 	

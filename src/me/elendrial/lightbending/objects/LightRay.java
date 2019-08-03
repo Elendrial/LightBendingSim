@@ -7,13 +7,16 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 import me.elendrial.lightbending.LightBending;
-import me.elendrial.lightbending.LineHelper;
+import me.elendrial.lightbending.helpers.LineHelper;
 
 public class LightRay {
 
 	public ArrayList<RaySegment> raySegments = new ArrayList<>();
 	public RaySegment curSeg;
 	public int wavelength;
+	
+	// TEMPORARY
+	public Color c = Color.white;
 	
 	public LightRay(int wavelength, double centreX, double centreY, double startDirection) {
 		this.wavelength = wavelength;
@@ -80,11 +83,13 @@ public class LightRay {
 	*/
 	
 	public void render(Graphics g) {
-		// TODO: Use wavelength to change the colour
 		int i = 0;
 		for(RaySegment r : raySegments) {
 			Point otherend = LineHelper.toPoint(LineHelper.getOppositeEnd(r.renderX, r.renderY, r.angle, r.length));
+			
+			g.setColor(c);
 			g.drawLine(r.renderX, r.renderY, otherend.x, otherend.y);
+			
 			if(LightBending.debug) {
 				g.setColor(Color.red);
 				g.drawRect(r.renderX - 2, r.renderY - 2, 4, 4);
