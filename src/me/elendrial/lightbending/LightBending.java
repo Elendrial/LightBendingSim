@@ -16,8 +16,7 @@ import me.elendrial.lightbending.objects.prisms.Prism;
 // NB: All angles are degrees, not radians. Any function needing angles will convert them to radians internally to comply with java. This is simply because I'm more used to them.
 // To recalculate all the light rays after changing any prisms, you must call calculateBoundaries() and then calculateRays(). If you move light sources then just calculateRays()
 // NB#2: please don't put a light source inside a prism. my code doesn't check for that and it wont be fun :(
-// NB#3: Currently there's no partial reflection, an so reflectiveness of a prism is only checked when entering
-// TODO: use Point more ffs
+// NB#3: Currently there's no partial reflection, and so reflectiveness of a prism is only checked when entering
 public class LightBending {
 	
 	public static ArrayList<LightSource> sourceList    = new ArrayList<>();

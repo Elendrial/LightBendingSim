@@ -10,6 +10,7 @@ import static me.elendrial.lightbending.LightBending.*;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Setups {
@@ -113,6 +114,41 @@ public class Setups {
 		
 		LightSource ls = new LightSource(00, 400, new int[] {400, 450, 500, 550, 600, 650}, new double[] {98});
 		sourceList.add(ls);
+	}
+	
+	/*
+	 * Of course this isn't "true random". However it is the most random I'm willing to make it.
+	 */
+	public static void generateTrueRandomSetup(Window w) {
+		// "important" rotations: 
+		int width = w.width;
+		int height = w.height;
+		
+		Random rand = new Random();
+		int rayamount = rand.nextInt(90) + 10;
+		int rayupper = rand.nextInt((height/2) - 50) + 100;
+		int raylower = rand.nextInt((height/2) - 50);
+		if(raylower < rayamount) {
+			int t = raylower;
+			raylower = rayamount;
+			rayamount = t;
+		}
+		
+		System.out.println("ra:" + rayamount + "\tru" + rayupper + "\trl" + raylower);
+		
+		float startColor = rand.nextFloat(), endColor = rand.nextFloat();
+		float h = startColor, step = (startColor-endColor)/rayamount;
+		for(int i = 0; i < rayamount; i++) {
+			sourceList.add(new LightSource(0, rayupper + (i * raylower/rayamount), new int[] {500}, new double[] {90}).setOverrideColorColour(Color.getHSBColor(h, 1, 1)));
+			h+=step;
+		}
+		
+		int prismamount = rand.nextInt(10)+5;
+		
+		for(int i = 0; i < prismamount; i++) {
+			prismList.add(new RegularPrism(rand.nextInt(width-300)+200, rand.nextInt(height-200)+100, 1f+ rand.nextFloat(), rand.nextInt(300)+50, rand.nextInt(360)));
+		}
+		
 	}
 	
 }

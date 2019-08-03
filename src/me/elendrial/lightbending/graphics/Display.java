@@ -33,15 +33,12 @@ public class Display extends Canvas{
 		
 		for(LightRay l : LightBending.rayList)
 			l.render(g);
-		//LightRay l = LightBending.rayList.get(0);
-		//Point end = LineHelper.getOppositeEnd(l.curSeg.startX, l.curSeg.startY, l.curSeg.angle, 300);
-		//g.drawLine(l.curSeg.startX, l.curSeg.startY, end.x, end.y);
 		
 		if(LightBending.debug) {
 			for(DebugMarker dbm : LightBending.markers)
 				dbm.render(g);
-			
 		}
+		
 		g.setColor(Color.RED);
 		g.drawString(totalFrames + "", 5, this.getHeight()-10);
 	}
