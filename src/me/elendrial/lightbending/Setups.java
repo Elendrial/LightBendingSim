@@ -27,15 +27,9 @@ public class Setups {
 		pr2.rotate(30);
 		
 		final int amount = 400 + (-1);
-		AtomicInteger h = new AtomicInteger(0);
+		float h = 1f/amount;
 		for (int i = 0; i < amount + 1; i++) {
-			sourceList.add(new LightSource(100, (int) (200+(400/amount)*i), new int[] {500}, new double[] {90}) {
-				public ArrayList<LightRay> getRays(){
-					ArrayList<LightRay> list = super.getRays();
-					list.stream().forEach(lr -> lr.c = Color.getHSBColor(((float) h.addAndGet(1))/(float) amount, 1f, 1f));
-					return list;
-				}
-			}.rotate(0));
+			sourceList.add(new LightSource(100, (int) (200+(400/amount)*i), new int[] {500}, new double[] {90}).setOverrideColorColour(Color.getHSBColor(h, 1f, 1f)));
 		}
 		
 		RegularPrism pr3 = new RegularPrism(750, 400, 1.4, 80, 0);
@@ -121,35 +115,75 @@ public class Setups {
 	 * Of course this isn't "true random". However it is the most random I'm willing to make it.
 	 */
 	public static void generateTrueRandomSetup(Window w) {
-		// "important" rotations: 
 		int width = w.width;
 		int height = w.height;
 		
+		generateRandomLightSources(-1, 0, 0, height, 0, height, 10, 100, new double[] {90}, 0, 300);
+		generateRandomPrisms(5, 15, 200, width-300, 100, height-100, 1f, 2f, 50, 350, 0, 360);
+	}
+	
+	// Calm as in: all the prisms are large, fewer of them, lower RI on avg. Light sources closer together on avg
+	public static void generateCalmRandomSetup(Window w) {
+		int width = w.width;
+		int height = w.height;
+		
+		generateRandomLightSources(-1, 0, 100, height - 100, 1, height/2-100, 10, 100, new double[] {90}, 0, 3);
+		generateRandomPrisms(3, 8, 100, width-100, 100, height-100, 1f, 1.5f, 250, 600, 0, 360);
+		
+	}
+	
+	public static void generateRandomPrisms(int min, int max, int minx, int maxx, int miny, int maxy, float minRI, float maxRI, int minsize, int maxsize, double minang, double maxang) {
 		Random rand = new Random();
-		int rayamount = rand.nextInt(90) + 10;
-		int rayupper = rand.nextInt((height/2) - 50) + 100;
-		int raylower = rand.nextInt((height/2) - 50);
-		if(raylower < rayamount) {
-			int t = raylower;
-			raylower = rayamount;
-			rayamount = t;
+		int amount = rand.nextInt(max-min)+min;
+		
+		for(int i = 0; i < amount; i++) {
+			int x = rand.nextInt(maxx - minx) + minx;
+			int y = rand.nextInt(maxy - miny) + miny;
+			float ri = rand.nextFloat() * (maxRI-minRI) + minRI;
+			int size = rand.nextInt(maxsize - minsize) + minsize;
+			double angle = rand.nextDouble() * (maxang - minang) + minang;
+
+			prismList.add(new RegularPrism(x,y,ri,size,angle));
+		}
+	}
+	
+	public static void generateRandomLightSources(int minx, int maxx, int miny, int maxy, int maxwidth, int maxheight, int minnum, int maxnum, double[] angles, int mindistapart, int maxdistapart) {
+		Random rand = new Random();
+		int amount = rand.nextInt(maxnum - minnum) + minnum;
+		
+		int ystart = miny == -1 ? 0 : rand.nextInt(maxy - miny) + miny;
+		int height = rand.nextInt(maxheight);
+		
+		int xstart = minx == -1 ? 0 : rand.nextInt(maxx - minx) + minx;
+		int width = rand.nextInt(maxwidth);
+		
+		while(Math.sqrt(Math.pow(height, 2) + Math.pow(width, 2))/amount > maxdistapart) {
+			if(amount + 5 < maxnum) amount += 5;
+			if(height - 2 > 0) height -= 2;
+			if(width - 2 > 0) width -= 2;
 		}
 		
-		System.out.println("ra:" + rayamount + "\tru" + rayupper + "\trl" + raylower);
+		while(Math.sqrt(Math.pow(height, 2) + Math.pow(width, 2))/amount < mindistapart) {
+			if(height + 2 < maxheight) height += 2;
+			if(width + 2 < maxwidth) width += 2;
+			if(amount - 3 < minnum) amount -= 3;
+		}
+
+		int yend = ystart + height/2 < maxy ? ystart + height/2 : maxy;
+		ystart = ystart - height/2 > miny ? ystart - height/2 : miny;
+
+		int xend = xstart + height/2 < maxx ? xstart + height/2 : maxx;
+		xstart = xstart - height/2 > minx ? xstart - height/2 : minx;
 		
-		float startColor = rand.nextFloat(), endColor = rand.nextFloat();
-		float h = startColor, step = (startColor-endColor)/rayamount;
-		for(int i = 0; i < rayamount; i++) {
-			sourceList.add(new LightSource(0, rayupper + (i * raylower/rayamount), new int[] {500}, new double[] {90}).setOverrideColorColour(Color.getHSBColor(h, 1, 1)));
+		generateLightSources(xstart, ystart, xend-xstart, yend-ystart, amount, rand.nextFloat(), rand.nextFloat(), angles);
+	}
+	
+	public static void generateLightSources(int x, int y, int width , int height, int amount, float colorStart, float colorEnd, double[] angles) {
+		float h = colorStart, step = (colorStart-colorEnd)/(float) amount;
+		for(int i = 0; i < amount; i++) {
+			sourceList.add(new LightSource(x + (i * width/amount), y + (i * height/amount), new int[] {500}, angles).setOverrideColorColour(Color.getHSBColor(h, 1, 1)));
 			h+=step;
 		}
-		
-		int prismamount = rand.nextInt(10)+5;
-		
-		for(int i = 0; i < prismamount; i++) {
-			prismList.add(new RegularPrism(rand.nextInt(width-300)+200, rand.nextInt(height-200)+100, 1f+ rand.nextFloat(), rand.nextInt(300)+50, rand.nextInt(360)));
-		}
-		
 	}
 	
 }

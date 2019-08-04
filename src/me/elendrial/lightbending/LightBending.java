@@ -26,23 +26,27 @@ public class LightBending {
 	public static HashMap<Boundary, Prism> boundaryMap = new HashMap<>();
 	
 	public static ArrayList<DebugMarker> markers = new ArrayList<>();
-	public static Window w = new Window("Light Bending", 1200, 800);
+	public static Window w = new Window("Light Bending", 1900, 1100);
 	
 	public static void main(String[] args) {
 		w.createDisplay();
 		w.start();
 		
+		createSetup();
+		
+		w.render();
+		wait(100);
+		render();
+	}
+	
+	public static void createSetup() {
 		//Setups.createClassicPrismDemo(w);
-		Setups.generateTrueRandomSetup(w);
+		Setups.generateCalmRandomSetup(w);
 		
 		calculateBoundaries();
 		calculateRays();
 		
 		//Setups.update3Prisms(w);
-		
-		w.render();
-		wait(100);
-		render();
 	}
 	
 	public static void render() {
@@ -56,6 +60,15 @@ public class LightBending {
 		w.render();
 		wait(time);
 		markers.clear();
+	}
+	
+	public static void clear() {
+		markers.clear();
+		prismList.clear();
+		sourceList.clear();
+		rayList.clear();
+		boundaryList.clear();
+		boundaryMap.clear();
 	}
 	
 	public static void calculateBoundaries() {

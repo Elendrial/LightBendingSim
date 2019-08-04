@@ -28,7 +28,7 @@ public class Display extends Canvas{
 		g.fillRect(cam.getX(), cam.getY(), getWidth(), getHeight());
 		
 		
-		g.setColor(Color.WHITE);
+		g.setColor(Settings.renderPrismsGrey ? Color.DARK_GRAY : Color.WHITE);
 		if(Settings.renderPrisms)
 			for(Boundary b : LightBending.boundaryList)
 				b.render(g);
@@ -44,7 +44,7 @@ public class Display extends Canvas{
 		
 		g.setColor(Color.RED);
 		if(Settings.renderInfo)
-			g.drawString(Settings.rayInteractions + "", 5, this.getHeight()-10);
+			g.drawString("i:" + Settings.rayInteractions + ", b:" + LightBending.boundaryList.size() + ", r:" + LightBending.rayList.size(), 5, this.getHeight()-10);
 		
 		if(Settings.debug)
 			g.drawString(totalFrames + "", 30, this.getHeight()-10);

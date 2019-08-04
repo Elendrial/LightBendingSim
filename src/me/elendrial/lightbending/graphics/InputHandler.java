@@ -29,13 +29,33 @@ public class InputHandler implements KeyListener{
 		case 'i':
 			Settings.renderInfo = !Settings.renderInfo;
 			break;
-		case '+':
-			Settings.rayInteractions += 1;
+		case 'g':
+			Settings.renderPrismsGrey = !Settings.renderPrismsGrey;
+			break;
+		case 'n':
+			LightBending.clear();
+			LightBending.createSetup();
+			break;
+		case 'N':
+			LightBending.createSetup();
+			break;
+		case 'c':
+			LightBending.clear();
+			break;
+		case 'r':
+			LightBending.calculateBoundaries();
 			LightBending.calculateRays();
+			break;
+		case '=':
+			Settings.rayInteractions += 1;
 			break;
 		case '-':
 			Settings.rayInteractions -= 1;
-			LightBending.calculateRays();
+		case '+':
+			Settings.rayInteractions += 10;
+			break;
+		case '_':
+			Settings.rayInteractions -= 10;
 			break;
 		}
 		
