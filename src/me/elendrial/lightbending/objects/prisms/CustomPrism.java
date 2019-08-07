@@ -20,6 +20,36 @@ public class CustomPrism extends Prism {
 		return refractiveIndex;
 	}
 	
+	public CustomPrism translate(int x, int y) {
+		for(Point2D.Double p : vertices) {
+			p.x += x;
+			p.y += y;
+		}
+		
+		return this;
+	}
+	
+	public CustomPrism translate(Point2D.Double t) {
+		for(Point2D.Double p : vertices) {
+			p.x += t.x;
+			p.y += t.y;
+		}
+		
+		return this;
+	}
+	
+	public CustomPrism scale(double d) {
+		for(Point2D.Double p : vertices) {
+			p.x *= d;
+			p.y *= d;
+		}
+		
+		this.centreX *= d;
+		this.centreY *= d;
+		
+		return this;
+	}
+	
 	public CustomPrism addVertex(int x, int y) {
 		this.vertices.add(new Point2D.Double(x, y));
 		return this;

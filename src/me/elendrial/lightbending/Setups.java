@@ -4,11 +4,13 @@ import me.elendrial.lightbending.graphics.Window;
 import me.elendrial.lightbending.objects.LightRay;
 import me.elendrial.lightbending.objects.LightSource;
 import me.elendrial.lightbending.objects.prisms.CauchyPrism;
+import me.elendrial.lightbending.objects.prisms.CustomPrism;
 import me.elendrial.lightbending.objects.prisms.RegularPrism;
 
 import static me.elendrial.lightbending.LightBending.*;
 
 import java.awt.Color;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -111,9 +113,209 @@ public class Setups {
 		sourceList.add(ls);
 	}
 	
-	/*
-	 * Of course this isn't "true random". However it is the most random I'm willing to make it.
-	 */
+	public static void createSmudge(Window w) {
+		// I have a reference diagram trust me on this, I know it's a mess
+		// NB: smudge is the rabbit of a streamer GenerationHollow, this is not a smudge in the typical sense, I have no idea how I'd do that.
+		
+		double scale = 6;
+		Point2D.Double offset = new Point2D.Double(375,50);
+		Random rand = new Random();
+		
+		CustomPrism a = new CustomPrism(0, rand.nextFloat() + 1);
+		a.addVertex(00, 96);
+		a.addVertex(14, 107);
+		a.addVertex(00, 128);
+		a.scale(scale);
+		a.translate(offset);
+		prismList.add(a);
+		
+		CustomPrism b = new CustomPrism(0, rand.nextFloat() + 1);
+		b.addVertex(0, 96);
+		b.addVertex(25, 79);
+		b.addVertex(35, 39);
+		b.addVertex(67, 00);
+		b.addVertex(42, 00);
+		b.addVertex(17, 21);
+		b.addVertex(00, 72);
+		b.scale(scale);
+		b.translate(offset);
+		prismList.add(b);
+		
+		CustomPrism c = new CustomPrism(0, rand.nextFloat() + 1);
+		c.addVertex(43, 29);
+		c.addVertex(64, 29);
+		c.addVertex(82, 47);
+		c.addVertex(82, 75);
+		c.addVertex(96, 89);
+		c.addVertex(101, 89);
+		c.addVertex(117, 75);
+		c.addVertex(117, 47);
+		c.addVertex(132, 28);
+		c.addVertex(155, 29);
+		c.addVertex(129, 0);
+		c.addVertex(122, 3);
+		c.addVertex(74, 3);
+		c.addVertex(67, 0);
+		c.scale(scale);
+		c.translate(offset);
+		prismList.add(c);
+		
+		CustomPrism d = new CustomPrism(0, rand.nextFloat() + 1);
+		d.addVertex(78, 4);
+		d.addVertex(100, 29);
+		d.addVertex(120, 4);
+		d.scale(scale);
+		d.translate(offset);
+		prismList.add(d);
+		
+		CustomPrism e = new CustomPrism(0, rand.nextFloat() + 1);
+		e.addVertex(129, 0);
+		e.addVertex(161, 0);
+		e.addVertex(182, 21);
+		e.addVertex(197, 72);
+		e.addVertex(197, 129);
+		e.addVertex(192, 117);
+		e.addVertex(175, 79);
+		e.addVertex(165, 40);
+		e.scale(scale);
+		e.translate(offset);
+		prismList.add(e);
+		
+		CustomPrism f = new CustomPrism(0, rand.nextFloat() + 1);
+		f.addVertex(54, 79);
+		f.addVertex(46, 72);
+		f.addVertex(46, 58);
+		f.addVertex(53, 50);
+		f.addVertex(60, 51);
+		f.addVertex(71, 58);
+		f.addVertex(72, 79);
+		f.addVertex(57, 86);
+		f.scale(scale);
+		f.translate(offset);
+		prismList.add(f);
+		
+		CustomPrism g = new CustomPrism(0, rand.nextFloat() + 1);
+		g.addVertex(128, 79);
+		g.addVertex(125, 57);
+		g.addVertex(132, 50);
+		g.addVertex(143, 50);
+		g.addVertex(150, 57);
+		g.addVertex(150, 79);
+		g.addVertex(142, 82);
+		g.scale(scale);
+		g.translate(offset);
+		prismList.add(g);
+		
+		CustomPrism h = new CustomPrism(0, rand.nextFloat() + 1);
+		h.addVertex(57, 85);
+		h.addVertex(72, 78);
+		h.addVertex(82, 75);
+		h.addVertex(97, 90);
+		h.addVertex(97, 114);
+		h.addVertex(71, 114);
+		h.addVertex(57, 98);
+		h.scale(scale);
+		h.translate(offset);
+		prismList.add(h);
+		
+		CustomPrism i = new CustomPrism(0, rand.nextFloat() + 1);
+		i.addVertex(142, 83);
+		i.addVertex(142, 97);
+		i.addVertex(125, 114);
+		i.addVertex(100, 114);
+		i.addVertex(100, 90);
+		i.addVertex(117, 75);
+		i.addVertex(128, 78);
+		i.scale(scale);
+		i.translate(offset);
+		prismList.add(i);
+		
+		CustomPrism j = new CustomPrism(0, rand.nextFloat() + 1);
+		j.addVertex(0, 128);
+		j.addVertex(22, 104);
+		j.addVertex(50, 103);
+		j.addVertex(75, 125);
+		j.addVertex(75, 135);
+		j.addVertex(68, 143);
+		j.addVertex(22, 147);
+		j.scale(scale);
+		j.translate(offset);
+		prismList.add(j);
+		
+		CustomPrism k = new CustomPrism(0, rand.nextFloat() + 1);
+		k.addVertex(199, 129);
+		k.addVertex(176, 149);
+		k.addVertex(132, 144);
+		k.addVertex(121, 136);
+		k.addVertex(122, 126);
+		k.addVertex(147, 104);
+		k.addVertex(176, 104);
+		k.scale(scale);
+		k.translate(offset);
+		prismList.add(k);
+		
+		CustomPrism l = new CustomPrism(0, rand.nextFloat() + 1);
+		l.addVertex(8, 133);
+		l.addVertex(23, 122);
+		l.addVertex(23, 146);
+		l.scale(scale);
+		l.translate(offset);
+		prismList.add(l);
+		
+		CustomPrism m = new CustomPrism(0, rand.nextFloat() + 1);
+		m.addVertex(50, 144);
+		m.addVertex(50, 121);
+		m.addVertex(69, 142);
+		m.scale(scale);
+		m.translate(offset);
+		prismList.add(m);
+		
+		CustomPrism n = new CustomPrism(0, rand.nextFloat() + 1);
+		n.addVertex(132, 143);
+		n.addVertex(151, 122);
+		n.addVertex(151, 145);
+		n.scale(scale);
+		n.translate(offset);
+		prismList.add(n);
+		
+		CustomPrism o = new CustomPrism(0, rand.nextFloat() + 1);
+		o.addVertex(176, 148);
+		o.addVertex(176, 122);
+		o.addVertex(190, 136);
+		o.scale(scale);
+		o.translate(offset);
+		prismList.add(o);
+		
+		CustomPrism p = new CustomPrism(0, rand.nextFloat() + 1);
+		p.addVertex(8, 97);
+		p.addVertex(26, 79);
+		p.addVertex(52, 79);
+		p.addVertex(56, 86);
+		p.addVertex(56, 98);
+		p.addVertex(71, 115);
+		p.addVertex(125, 115);
+		p.addVertex(143, 97);
+		p.addVertex(143, 84);
+		p.addVertex(176, 79);
+		p.addVertex(198, 129);
+		p.addVertex(177, 149);
+		p.addVertex(132, 145);
+		p.addVertex(122, 138);
+		p.addVertex(77, 138);
+		p.addVertex(70, 145);
+		p.addVertex(21, 149);
+		p.addVertex(0, 131);
+		p.addVertex(14, 108);
+		p.scale(scale);
+		p.translate(offset);
+		prismList.add(p);
+		
+		generateLightSources(0, 0, 0, w.height, 20, 240f/360f, 240f/360f, new double[] {90});
+		generateLightSources(w.width, 20, 0, w.height, 20, 50f/360f, 50f/360f, new double[] {-90});
+	}
+	
+	
+	// Of course this isn't "true random". However it is the most random I'm willing to make it. 
 	public static void generateTrueRandomSetup(Window w) {
 		int width = w.width;
 		int height = w.height;
@@ -132,6 +334,8 @@ public class Setups {
 		
 	}
 	
+	
+	// "HELPER" METHODS
 	public static void generateRandomPrisms(int min, int max, int minx, int maxx, int miny, int maxy, float minRI, float maxRI, int minsize, int maxsize, double minang, double maxang) {
 		Random rand = new Random();
 		int amount = rand.nextInt(max-min)+min;
